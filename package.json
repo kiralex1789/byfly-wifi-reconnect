@@ -1,0 +1,16 @@
+{
+  "name": "byfly-wifi-reconnect",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "pino": "^9.5.0",
+    "puppeteer": "^23.6.1"
+  }
+}
