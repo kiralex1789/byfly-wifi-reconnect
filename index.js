@@ -41,31 +41,36 @@ const sleep = async (sec) => new Promise(r => setTimeout(r, sec * 1000));
 async function doByFlyWiFiLogin() {
     console.log('Do ByFly WiFi login...')
     logger.info('Do ByFly WiFi login...');
-    const browser = await puppeteer.launch();
-    const page = await browser.newPage();
+    try {
+        const browser = await puppeteer.launch();
+        const page = await browser.newPage();
 
-    await page.goto('https://ciscowifi.beltelecom.by/'); // NOTE: disconnect button: https://ciscowifi.beltelecom.by/connected/
-    await page.setViewport({width: 1080, height: 1024});
+        await page.goto('https://ciscowifi.beltelecom.by/'); // NOTE: disconnect button: https://ciscowifi.beltelecom.by/connected/
+        await page.setViewport({width: 1080, height: 1024});
 
-    await page.waitForSelector('a[href="#have-a-login-pass"]');
-    await page.locator('a[href="#have-a-login-pass"]').click();
+        await page.waitForSelector('a[href="#have-a-login-pass"]');
+        await page.locator('a[href="#have-a-login-pass"]').click();
 
-    await page.waitForSelector('button[id="pay_button_oc"]');
-    await sleep(1);
-    await page.type('form[action="/connect_by_card/"] input[name="login"]', auth.login);
+        await page.waitForSelector('button[id="pay_button_oc"]');
+        await sleep(1);
+        await page.type('form[action="/connect_by_card/"] input[name="login"]', auth.login);
 
-    const pwdHandle = await page.$('form[action="/connect_by_card/"] input[name="password"]');
-    await pwdHandle.type(auth.password);
-    await page.screenshot({path: 'byfly-login-1.png'});
+        const pwdHandle = await page.$('form[action="/connect_by_card/"] input[name="password"]');
+        await pwdHandle.type(auth.password);
+        await page.screenshot({path: 'byfly-login-1.png'});
 
-    await pwdHandle.press('Enter');
+        await pwdHandle.press('Enter');
 
-    await sleep(1);
+        await sleep(1);
 
-    await page.screenshot({path: 'byfly-login-2.png'});
+        await page.screenshot({path: 'byfly-login-2.png'});
 
-    await browser.close();
-    logger.info('Byfly login done');
+        await browser.close();
+        logger.info('Byfly login done');
+    } catch (e) {
+        console.log(`doByFlyWiFiLogin error: ${e}`);
+        logger.error(`doByFlyWiFiLogin error: ${e}`);
+    }
 }
 
 
