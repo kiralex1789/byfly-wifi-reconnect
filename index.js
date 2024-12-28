@@ -3,12 +3,16 @@ import puppeteer from 'puppeteer';
 import pino from 'pino';
 
 
+function console_log(...args) {
+    console.log(new Date(), ...args);
+}
+
 const auth = JSON.parse(fs.readFileSync('auth.json', {encoding: 'utf-8'}));
-console.log('Using auth:', auth);
+console_log('Using auth:', auth);
 
 
 const logFile = './app.log';
-console.log('Storing logs into', logFile);
+console_log('Storing logs into', logFile);
 
 const fileTransport = pino.transport({
     target: 'pino/file',
@@ -39,7 +43,7 @@ async function checkInternet() {
 const sleep = async (sec) => new Promise(r => setTimeout(r, sec * 1000));
 
 async function doByFlyWiFiLogin() {
-    console.log('Do ByFly WiFi login...')
+    console_log('Do ByFly WiFi login...');
     logger.info('Do ByFly WiFi login...');
     try {
         const browser = await puppeteer.launch();
@@ -68,7 +72,7 @@ async function doByFlyWiFiLogin() {
         await browser.close();
         logger.info('Byfly login done');
     } catch (e) {
-        console.log(`doByFlyWiFiLogin error: ${e}`);
+        console_log(`doByFlyWiFiLogin error: ${e}`);
         logger.error(`doByFlyWiFiLogin error: ${e}`);
     }
 }
