@@ -25,17 +25,25 @@ const logger = pino(
     fileTransport
 );
 
+let internetIsOk = false;
 
 async function checkInternet() {
+    let nowIsOk = false;
     try {
         logger.info('Checking internet...');
         const response = await fetch('https://api.ipify.org?format=json');
         const data = await response.json();
         if (data && data.ip) {
             logger.info('Internet is ok');
+            nowIsOk = true;
             return true;
         }
     } catch {
+    } finally {
+        if (nowIsOk != internetIsOk) {
+            console_log('Internet is ok:', nowIsOk);
+            internetIsOk = nowIsOk;
+        }
     }
     return false;
 }
